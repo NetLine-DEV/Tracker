@@ -11,6 +11,8 @@ import { environment } from './environments/environment';
 import { provideFirestore } from '@angular/fire/firestore';
 import { getFirestore } from 'firebase/firestore';
 import { importProvidersFrom } from '@angular/core';
+import { IonicStorageModule, provideStorage } from '@ionic/storage-angular';
+import { Drivers } from '@ionic/storage';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -21,5 +23,9 @@ bootstrapApplication(AppComponent, {
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
+    importProvidersFrom(IonicStorageModule.forRoot({
+      name: 'database',
+      driverOrder: [Drivers.IndexedDB]
+    }))
   ],
 });

@@ -1,0 +1,16 @@
+.title-chip-container {
+  text-align: left;
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+}
+
+.calendar-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: start;
+}

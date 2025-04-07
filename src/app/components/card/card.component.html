@@ -1,0 +1,70 @@
+<ion-card class="card">
+  <ion-card-header>
+    <div class="title-chip-container">
+      <div class="title">
+        <ion-card-title class="title">
+          <ion-icon name="document-outline"></ion-icon>
+          {{id_os}}
+        </ion-card-title>
+        <ion-chip [color]="colorStatus">{{status}}</ion-chip>
+      </div>
+      <ion-card-subtitle>{{description}}</ion-card-subtitle>
+    </div>
+  </ion-card-header>
+
+  <div class="calendar-content">
+    <ion-card-content>
+      <span>
+        <ion-icon name="calendar" aria-hidden="true"></ion-icon>
+        Data de início:
+        {{init_date | date: 'HH:mm - dd/MM/yyyy'}}
+      </span>
+    </ion-card-content>
+    <ion-card-content>
+      @if (finishDate != '') {
+        <span>
+          <ion-icon name="calendar" aria-hidden="true"></ion-icon>
+          Data de término:
+          {{finishDate | date: 'HH:mm - dd/MM/yyyy'}}
+        </span>
+      } @else {
+        <ion-button [id]="'open-modal-' + id_os" expand="block" fill="outline" color="secondary" class="btn_add_date">
+          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+          Data de fechamento
+        </ion-button>
+      }
+    </ion-card-content>
+  </div>
+</ion-card>
+
+<ion-modal [trigger]="'open-modal-' + id_os" (willDismiss)="onWillDismiss($event)">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-button color="danger" (click)="cancel()">
+            <ion-icon name="close-outline"></ion-icon>
+            Cancelar
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end">
+          <ion-button color="success" (click)="confirm()" [strong]="true">
+            <ion-icon name="checkmark-outline"></ion-icon>
+            Confirmar
+          </ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <ion-item>
+        <ion-input
+          label="Data de fechamento"
+          labelPlacement="stacked"
+          type="datetime-local"
+          placeholder="Insira a data de fechamento"
+          [(ngModel)]="finishDate"
+        ></ion-input>
+      </ion-item>
+    </ion-content>
+  </ng-template>
+</ion-modal>

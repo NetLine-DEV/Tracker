@@ -39,23 +39,23 @@
 
 <ion-modal [trigger]="'open-modal-' + id_os" (willDismiss)="onWillDismiss($event)">
   <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-buttons slot="start">
-          <ion-button color="danger" (click)="cancel()">
-            <ion-icon name="close-outline"></ion-icon>
-            Cancelar
-          </ion-button>
-        </ion-buttons>
-        <ion-buttons slot="end">
-          <ion-button color="success" (click)="confirm()" [strong]="true">
-            <ion-icon name="checkmark-outline"></ion-icon>
-            Confirmar
-          </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
     <ion-content class="ion-padding">
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button color="danger" (click)="cancel()">
+              <ion-icon name="close-outline"></ion-icon>
+              Cancelar
+            </ion-button>
+          </ion-buttons>
+          <ion-buttons slot="end">
+            <ion-button color="success" (click)="confirm()" [strong]="true">
+              <ion-icon name="checkmark-outline"></ion-icon>
+              Confirmar
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
       <ion-item>
         <ion-input
           label="Data de fechamento"

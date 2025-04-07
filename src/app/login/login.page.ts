@@ -50,7 +50,7 @@ export class LoginPage {
     .then(() => {
       this.form.reset();
       this.toast.show('Login realizado com sucesso!', 'success');
-      this.router.navigate(['/tabs/list-os']);
+      this.router.navigate(['/tabs/os']);
     })
     .catch((error) => {
       this.toast.show('Dados inválidos.', 'danger');

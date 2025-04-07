@@ -1,0 +1,34 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Ordens de Serviço</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ordens de Serviço</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list [inset]="false" class="list">
+      <app-card
+        *ngFor="let item of os"
+        class="item-list"
+        [id_os]="item.id"
+        [description]="item.mensagem"
+        [init_date]="item.data_abertura"
+        [finish_date]="item.data_fechamento"
+        [colorStatus]="getColorStatus(item.status)"
+        [status]="getStatus(item.status)"
+      >
+      </app-card>
+    </ion-list>
+  </ion-content>
+</ion-content>

@@ -1,0 +1,31 @@
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="container">
+    <header class="header">
+      <ion-icon color="light" aria-hidden="true" size="large" name="planet-outline"></ion-icon>
+      <div class="title-container">
+        <ion-title color="light" class="title">
+          Netline <span class="subtitle">Tracker</span>
+        </ion-title>
+      </div>
+    </header>
+    <main>
+      <form [formGroup]="form" (submit)="login()" class="form">
+        <ion-input color="dark" type="email" labelPlacement="stacked" label="Email" placeholder="email@exemplo.com" fill="outline" labelPlacement="stacked" formControlName="email">
+        </ion-input>
+        <ion-input color="dark" [type]="showPassword ? 'text' : 'password'" labelPlacement="stacked" label="Senha" placeholder="********" fill="outline" formControlName="password">
+          <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
+          <ion-button color="dark" (click)="toggleShowPassword()" fill="clear" slot="end" aria-label="Show/hide">
+            <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
+          </ion-button>
+        </ion-input>
+        <ion-button type="submit" [disabled]="loading" color="dark" class="login-btn" fill="outline">
+          <ion-icon *ngIf="!loading" name="log-in-outline" slot="start"></ion-icon>
+          <ion-spinner *ngIf="loading" name="dots" slot="start"></ion-spinner>
+          {{ loading ? '' : 'Entrar' }}
+        </ion-button>
+      </form>
+    </main>
+  </div>
+</ion-content>
+
+

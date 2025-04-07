@@ -1,0 +1,62 @@
+ion-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  &::part(scroll) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .container {
+    padding: 2rem;
+    border-radius: 12px;
+    gap: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f1f1f1;
+      border-radius: 12px;
+      text-align: center;
+
+      .title-container {
+        display: flex;
+
+        .title {
+          font-family: 'Poppins';
+          font-weight: 600;
+
+          .subtitle {
+            color: var(--ion-color-primary);
+            font-size: inherit;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      align-items: center;
+
+      .login-btn{
+        width: 100%;
+        font-weight: bold;
+        font-family: 'Poppins', sans-serif;
+      }
+    }
+  }
+}

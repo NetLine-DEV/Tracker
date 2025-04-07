@@ -4,6 +4,7 @@ import { addIcons } from 'ionicons';
 import { construct, logOutOutline } from 'ionicons/icons';
 import { ToastService } from '../services/toast/toast.service';
 import { AuthService } from '../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tabs',
@@ -14,6 +15,7 @@ import { AuthService } from '../services/auth/auth.service';
 export class TabsPage {
   private authService = inject(AuthService);
   private toast = inject(ToastService);
+  private router = inject(Router);
   public environmentInjector = inject(EnvironmentInjector);
 
   constructor() {
@@ -23,6 +25,7 @@ export class TabsPage {
   logout() {
     this.authService.logout()
     .then(() => {
+      this.router.navigateByUrl('/login', { replaceUrl: true });
       this.toast.show('Sucesso ao sair da aplicação', 'success');
     })
     .catch((error) => {

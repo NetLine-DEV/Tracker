@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonHeader, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+import { IonContent, IonHeader, IonTitle, IonToolbar, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { OsService } from '../services/os/os.service';
 import { ToastService } from '../services/toast/toast.service';
 import { Auth, onAuthStateChanged  } from '@angular/fire/auth';
@@ -18,7 +18,7 @@ import { CardComponent } from '../components/card/card.component';
   templateUrl: './os.page.html',
   styleUrls: ['./os.page.scss'],
   standalone: true,
-  imports: [CardComponent, IonContent, IonHeader, IonTitle, IonToolbar, IonRefresher, IonRefresherContent, IonList, CommonModule, FormsModule, NgFor]
+  imports: [CardComponent, IonContent, IonItem, IonLabel, IonHeader, IonTitle, IonToolbar, IonRefresher, IonRefresherContent, IonList, CommonModule, FormsModule, NgFor]
 })
 export class OsPage implements OnInit {
   private osService: OsService = inject(OsService);
@@ -49,10 +49,13 @@ export class OsPage implements OnInit {
     });
   }
 
+  isArray(value: any): boolean {
+    return Array.isArray(value);
+  }
+
   fetchOS() {
     this.osService.getOSByUSer(this.user.idColaborador).subscribe({
       next: async (response: OS[]) => {
-        console.log('[fetchOS] OS da API:', response);
         this.os = response;
         await this.storageService.saveOS(response);
       },
@@ -62,7 +65,6 @@ export class OsPage implements OnInit {
         const cachedOS = await this.storageService.getOS();
         if (cachedOS.length > 0) {
           this.os = cachedOS;
-          console.log('[fetchOS] OS carregadas do cache:', cachedOS);
         } else {
           console.error('[fetchOS] Nenhum dado no cache.');
         }

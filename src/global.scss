@@ -36,14 +36,10 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
 
-body.dark ion-content {
-  --background: var(--ion-color-dark);
-  color: white;
-  padding-top: var(--ion-safe-area-top);
-  padding-bottom: var(--ion-safe-area-bottom);
+:root {
+  --ion-safe-area-top: 2.5rem;
 }
 
-ion-content {
-  padding-top: var(--ion-safe-area-top);
-  padding-bottom: var(--ion-safe-area-bottom);
+:root.ios {
+  --ion-safe-area-bottom: 1rem;
 }

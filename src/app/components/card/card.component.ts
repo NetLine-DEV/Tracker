@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 import { OsService } from 'src/app/services/os/os.service';
 import { ToastService } from 'src/app/services/toast/toast.service';
 import { calendar, addCircleOutline, documentOutline, closeOutline, checkmarkOutline } from 'ionicons/icons';
+import { EventEmitter, Output } from '@angular/core';
 import type { OverlayEventDetail } from '@ionic/core';
 
 

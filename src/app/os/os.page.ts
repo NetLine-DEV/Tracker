@@ -54,18 +54,26 @@ export class OsPage implements OnInit {
 
   fetchOS() {
     this.osService.getOSByUSer(this.user.idColaborador).subscribe({
-      next: async (response: OS[]) => {
-        this.os = response;
-        await this.storageService.saveOS(response);
+      next: async (ordens: OS[]) => {
+        this.osService.getOSFinishByUser(this.user.idColaborador).subscribe({
+          next: async (finalizadas: any[]) => {
+            const idsFinalizadas = finalizadas.map(os => os.id_os);
+
+            this.os = ordens.filter(os => !idsFinalizadas.includes(os.id));
+
+            await this.storageService.saveOS(this.os);
+          },
+          error: async (err) => {
+            console.warn('[fetchOS] Erro ao buscar finalizadas:', err);
+            this.os = ordens;
+          }
+        });
       },
       error: async (err) => {
-        console.warn('[fetchOS] Erro na API. Buscando cache:', err);
-
+        console.warn('[fetchOS] Erro na API principal. Buscando cache:', err);
         const cachedOS = await this.storageService.getOS();
         if (cachedOS.length > 0) {
           this.os = cachedOS;
-        } else {
-          console.error('[fetchOS] Nenhum dado no cache.');
         }
       }
     });
@@ -119,20 +127,30 @@ export class OsPage implements OnInit {
 
   handleRefresh(event: CustomEvent) {
     this.osService.getOSByUSer(this.user.idColaborador).subscribe({
-      next: async (response) => {
-        this.os = response;
-        await this.storageService.saveOS(response);
-        (event.target as HTMLIonRefresherElement).complete();
+      next: (ordens) => {
+        this.osService.getOSFinishByUser(this.user.idColaborador).subscribe({
+          next: async (finalizadas: any[]) => {
+            const idsFinalizadas = finalizadas.map(os => os.id_os);
+            console.log('idsFinalizadas', idsFinalizadas);
+            this.os = ordens.filter(os => !idsFinalizadas.includes(os.id));
+            await this.storageService.saveOS(this.os);
+            (event.target as HTMLIonRefresherElement).complete();
+          },
+          error: async (err) => {
+            console.warn('[refresh] Erro ao buscar finalizadas:', err);
+            this.os = ordens;
+            (event.target as HTMLIonRefresherElement).complete();
+          }
+        });
       },
       error: async (err) => {
         console.error('Erro ao recarregar OS:', err);
-
         const cachedOS = await this.storageService.getOS();
         this.os = cachedOS;
-
         (event.target as HTMLIonRefresherElement).complete();
       }
     });
   }
+
 
 }

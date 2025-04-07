@@ -19,4 +19,8 @@ export class OsService {
   postFinishOS(data: any) {
     return this.http.post(`${this.API_URL}/api/inserir-finalizacao-os/`, data).pipe(take(1));
   }
+
+  getOSFinishByUser(idColaborador: string): Observable<OS[]> {
+    return this.http.get<OS[]>(`${this.API_URL}/api/finalizacoes/${idColaborador}/`).pipe(take(1));
+  }
 }

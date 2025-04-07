@@ -38,7 +38,6 @@ export class OsPage implements OnInit {
         await this.storageService.saveUser(this.user);
         this.fetchOS();
       } else {
-        console.warn('[auth] Offline? Tentando recuperar usuário do cache...');
         this.user = await this.storageService.getUser();
         if (!this.user) {
           console.error('[auth] Nenhum usuário no cache. Não é possível continuar.');

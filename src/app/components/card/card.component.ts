@@ -9,6 +9,8 @@ import { ToastService } from 'src/app/services/toast/toast.service';
 import { calendar, addCircleOutline, documentOutline, closeOutline, checkmarkOutline } from 'ionicons/icons';
 import { EventEmitter, Output } from '@angular/core';
 import type { OverlayEventDetail } from '@ionic/core';
+import localforage from 'localforage';
+import { SyncService } from 'src/app/services/sync/sync.service';
 
 
 @Component({
@@ -17,9 +19,10 @@ import type { OverlayEventDetail } from '@ionic/core';
   styleUrls: ['./card.component.scss'],
   imports: [IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonChip, IonIcon, IonButton, IonContent, IonModal, IonHeader, IonButtons, IonItem, IonToolbar, IonInput, DatePipe, FormsModule]
 })
-export class CardComponent  implements OnInit {
+export class CardComponent implements OnInit {
   private authService = inject(AuthService);
   private osService = inject(OsService);
+  private syncService = inject(SyncService);
   private toast = inject(ToastService);
 
   public userData: any;
@@ -61,7 +64,7 @@ export class CardComponent  implements OnInit {
     this.modal.dismiss(this.finishDate, 'confirm')
   }
 
-  onWillDismiss(event: CustomEvent<OverlayEventDetail>) {
+  async onWillDismiss(event: CustomEvent<OverlayEventDetail>) {
     if (event.detail.role === 'confirm') {
       const dadosFinalizacao = {
         id_os: this.id_os,
@@ -78,8 +81,8 @@ export class CardComponent  implements OnInit {
         next: () => {
           this.toast.show('Dado registrado!', 'success');
         },
-        error: (error) => {
-          this.toast.show('Erro ao registrar dado!', 'danger');
+        error: () => {
+          this.syncService.salvarFinalizacaoOffline(dadosFinalizacao);
         }
       });
     }

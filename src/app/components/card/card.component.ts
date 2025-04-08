@@ -64,13 +64,19 @@ export class CardComponent implements OnInit {
     this.modal.dismiss(this.finishDate, 'confirm')
   }
 
+  toUTCStringLocal(date: string): string {
+    const dateObj = new Date(date);
+    const utcDate = new Date(dateObj.getTime() - (dateObj.getTimezoneOffset() * 60000));
+    return utcDate.toISOString().slice(0, 19).replace('T', ' ');
+  }
+
   async onWillDismiss(event: CustomEvent<OverlayEventDetail>) {
     if (event.detail.role === 'confirm') {
       const dadosFinalizacao = {
         id_os: this.id_os,
         mensagem: this.description,
-        data_abertura: this.init_date,
-        data_fechamento: this.finishDate.replace('T', ' '),
+        data_abertura: this.toUTCStringLocal(this.init_date),
+        data_fechamento: this.toUTCStringLocal(this.finishDate),
         usuario: {
           email: this.user.email,
           idColaborador: this.user.idColaborador

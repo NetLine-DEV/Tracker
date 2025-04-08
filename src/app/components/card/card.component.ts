@@ -64,10 +64,10 @@ export class CardComponent implements OnInit {
     this.modal.dismiss(this.finishDate, 'confirm')
   }
 
-  toUTCStringLocal(date: string): string {
-    const dateObj = new Date(date);
-    const utcDate = new Date(dateObj.getTime() - (dateObj.getTimezoneOffset() * 60000));
-    return utcDate.toISOString().slice(0, 19).replace('T', ' ');
+  toUTCISOString(dateStr: string): string {
+    const localDate = new Date(dateStr);
+    const utc = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
+    return utc.toISOString();
   }
 
   async onWillDismiss(event: CustomEvent<OverlayEventDetail>) {
@@ -75,8 +75,8 @@ export class CardComponent implements OnInit {
       const dadosFinalizacao = {
         id_os: this.id_os,
         mensagem: this.description,
-        data_abertura: this.toUTCStringLocal(this.init_date),
-        data_fechamento: this.toUTCStringLocal(this.finishDate),
+        data_abertura: this.toUTCISOString(this.init_date),
+        data_fechamento: this.toUTCISOString(this.finishDate),
         usuario: {
           email: this.user.email,
           idColaborador: this.user.idColaborador

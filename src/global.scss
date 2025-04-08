@@ -36,10 +36,3 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
 
-:root {
-  --ion-safe-area-top: 2.5rem;
-}
-
-:root.ios {
-  --ion-safe-area-bottom: 1rem;
-}

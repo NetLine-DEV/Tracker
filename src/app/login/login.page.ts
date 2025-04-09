@@ -55,6 +55,7 @@ export class LoginPage {
     })
     .finally(() => {
       this.loading = false;
+      this.loginError = false;
     })
   }
 }

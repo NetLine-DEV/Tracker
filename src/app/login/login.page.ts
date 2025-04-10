@@ -14,7 +14,7 @@ import { AuthService } from '../services/auth/auth.service';
   standalone: true,
   imports: [IonContent, IonInput, IonButton, IonIcon, IonTitle, IonSpinner, IonText, CommonModule, FormsModule, ReactiveFormsModule]
 })
-export class LoginPage {
+export class LoginPage implements OnInit{
   private authService = inject(AuthService);
   private formBuilder = inject(NonNullableFormBuilder);
   private router = inject(Router);
@@ -24,6 +24,10 @@ export class LoginPage {
 
   constructor() {
     addIcons({ lockClosed, eye, eyeOff, logInOutline, planetOutline })
+  }
+
+  ngOnInit(): void {
+      this.loginError = false;
   }
 
   form: FormGroup = this.formBuilder.group({
@@ -55,7 +59,6 @@ export class LoginPage {
     })
     .finally(() => {
       this.loading = false;
-      this.loginError = false;
     })
   }
 }

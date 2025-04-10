@@ -7,6 +7,12 @@
           {{id_os}}
         </ion-card-title>
         <ion-chip [color]="colorStatus">{{status}}</ion-chip>
+        @if (isFinishedOffline) {
+          <ion-chip color="warning">
+            <ion-icon name="cloud-offline-outline"></ion-icon>
+            <ion-label>Finalizada</ion-label>
+          </ion-chip>
+        }
       </div>
       <ion-card-subtitle>{{description}}</ion-card-subtitle>
     </div>
@@ -28,10 +34,17 @@
           {{finishDate | date: 'HH:mm - dd/MM/yyyy'}}
         </span>
       } @else {
-        <ion-button [id]="'open-modal-' + id_os" expand="block" fill="outline" color="secondary" class="btn_add_date">
-          <ion-icon slot="start" name="add-circle-outline"></ion-icon>
-          Data de fechamento
-        </ion-button>
+        <ion-button
+        [id]="'open-modal-' + id_os"
+        expand="block"
+        fill="outline"
+        color="secondary"
+        class="btn_add_date"
+        [disabled]="isFinishedOffline"
+      >
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        Data de fechamento
+      </ion-button>
       }
     </ion-card-content>
   </div>

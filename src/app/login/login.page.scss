@@ -43,7 +43,7 @@ ion-content {
           color: var(--ion-color-step-950);
 
           .subtitle {
-            color: var(--ion-color-primary);
+            color: var(--ion-color-success);
             font-size: inherit;
             font-weight: 600;
           }
@@ -61,6 +61,11 @@ ion-content {
         width: 100%;
         font-weight: bold;
         font-family: 'Poppins', sans-serif;
+      }
+
+      .error-message {
+        text-align: center;
+        font-weight: bold;
       }
     }
   }

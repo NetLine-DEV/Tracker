@@ -10,14 +10,17 @@
     </header>
     <main>
       <form [formGroup]="form" (submit)="login()" class="form">
-        <ion-input color="dark" type="email" labelPlacement="stacked" label="Email" placeholder="email@exemplo.com" fill="outline" labelPlacement="stacked" formControlName="email">
+        <ion-input  [color]="loginError || (form.get('email')?.invalid && form.get('email')?.touched) ? 'danger' : 'dark'" type="email" labelPlacement="stacked" label="Email" placeholder="email@exemplo.com" fill="outline" labelPlacement="stacked" formControlName="email">
         </ion-input>
-        <ion-input color="dark" [type]="showPassword ? 'text' : 'password'" labelPlacement="stacked" label="Senha" placeholder="********" fill="outline" formControlName="password">
+        <ion-input  [color]="loginError || (form.get('password')?.invalid && form.get('password')?.touched) ? 'danger' : 'dark'" [type]="showPassword ? 'text' : 'password'" labelPlacement="stacked" label="Senha" placeholder="********" fill="outline" formControlName="password">
           <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
           <ion-button color="dark" (click)="toggleShowPassword()" fill="clear" slot="end" aria-label="Show/hide">
             <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
           </ion-button>
         </ion-input>
+        <ion-text color="danger" *ngIf="loginError">
+          <p class="error-message">Verifique suas credenciais!</p>
+        </ion-text>
         <ion-button type="submit" [disabled]="loading" color="dark" class="login-btn" fill="outline">
           <ion-icon *ngIf="!loading" name="log-in-outline" slot="start"></ion-icon>
           <ion-spinner *ngIf="loading" name="dots" slot="start"></ion-spinner>

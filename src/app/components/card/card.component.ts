@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonChip, IonIcon, IonButton, IonContent, IonModal, IonHeader, IonButtons, IonItem, IonToolbar, IonInput } from '@ionic/angular/standalone';
+import { IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonChip, IonIcon, IonButton, IonContent, IonModal, IonHeader, IonButtons, IonItem, IonToolbar, IonInput, IonLabel } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { OsService } from 'src/app/services/os/os.service';
@@ -9,17 +9,20 @@ import { ToastService } from 'src/app/services/toast/toast.service';
 import { calendar, addCircleOutline, documentOutline, closeOutline, checkmarkOutline } from 'ionicons/icons';
 import { EventEmitter, Output } from '@angular/core';
 import type { OverlayEventDetail } from '@ionic/core';
+import localforage from 'localforage';
+import { SyncService } from 'src/app/services/sync/sync.service';
 
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.scss'],
-  imports: [IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonChip, IonIcon, IonButton, IonContent, IonModal, IonHeader, IonButtons, IonItem, IonToolbar, IonInput, DatePipe, FormsModule]
+  imports: [IonCard, IonCardContent, IonCardHeader, IonCardTitle, IonCardSubtitle, IonChip, IonIcon, IonButton, IonContent, IonModal, IonHeader, IonButtons, IonItem, IonToolbar, IonInput, IonLabel, DatePipe, FormsModule]
 })
-export class CardComponent  implements OnInit {
+export class CardComponent implements OnInit {
   private authService = inject(AuthService);
   private osService = inject(OsService);
+  private syncService = inject(SyncService);
   private toast = inject(ToastService);
 
   public userData: any;
@@ -29,6 +32,7 @@ export class CardComponent  implements OnInit {
     idColaborador: 0
   };
   public finishDate: string = '';
+  public isFinishedOffline: boolean = false;
 
   @Input() id_os: string = '';
   @Input() description: string = '';
@@ -47,6 +51,9 @@ export class CardComponent  implements OnInit {
     this.userData = await this.authService.getUser();
     this.user.email = this.userData.email;
     this.user.idColaborador = this.userData.idColaborador;
+
+    const pendentes = await localforage.getItem<any[]>('osPendentes') || [];
+    this.isFinishedOffline = pendentes.some(os => os.id_os === this.id_os);
   }
 
   formatDate(date: Date): String {
@@ -61,13 +68,19 @@ export class CardComponent  implements OnInit {
     this.modal.dismiss(this.finishDate, 'confirm')
   }
 
-  onWillDismiss(event: CustomEvent<OverlayEventDetail>) {
+  toUTCISOString(dateStr: string): string {
+    const localDate = new Date(dateStr);
+    const utc = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000);
+    return utc.toISOString();
+  }
+
+  async onWillDismiss(event: CustomEvent<OverlayEventDetail>) {
     if (event.detail.role === 'confirm') {
       const dadosFinalizacao = {
         id_os: this.id_os,
         mensagem: this.description,
-        data_abertura: this.init_date,
-        data_fechamento: this.finishDate.replace('T', ' '),
+        data_abertura: this.toUTCISOString(this.init_date),
+        data_fechamento: this.toUTCISOString(this.finishDate),
         usuario: {
           email: this.user.email,
           idColaborador: this.user.idColaborador
@@ -78,8 +91,14 @@ export class CardComponent  implements OnInit {
         next: () => {
           this.toast.show('Dado registrado!', 'success');
         },
-        error: (error) => {
-          this.toast.show('Erro ao registrar dado!', 'danger');
+        error: async () => {
+          const pendentes = await localforage.getItem<any[]>('osPendentes') || [];
+          const exist = pendentes.some(os => os.id_os === this.id_os);
+
+          if (!exist) {
+            await this.syncService.salvarFinalizacaoOffline(dadosFinalizacao);
+            this.isFinishedOffline = true;
+          }
         }
       });
     }

@@ -10,9 +10,27 @@
     </header>
     <main>
       <form [formGroup]="form" (submit)="login()" class="form">
-        <ion-input  [color]="loginError || (form.get('email')?.invalid && form.get('email')?.touched) ? 'danger' : 'dark'" type="email" labelPlacement="stacked" label="Email" placeholder="email@exemplo.com" fill="outline" labelPlacement="stacked" formControlName="email">
+        <ion-input
+          [color]="loginError || (form.get('email')?.invalid && form.get('email')?.touched) ? 'danger' : 'dark'"
+          type="email"
+          labelPlacement="stacked"
+          label="Email"
+          placeholder="email@exemplo.com"
+          fill="outline"
+          labelPlacement="stacked"
+          formControlName="email"
+          autocomplete="email"
+        >
         </ion-input>
-        <ion-input  [color]="loginError || (form.get('password')?.invalid && form.get('password')?.touched) ? 'danger' : 'dark'" [type]="showPassword ? 'text' : 'password'" labelPlacement="stacked" label="Senha" placeholder="********" fill="outline" formControlName="password">
+        <ion-input
+          [color]="loginError || (form.get('password')?.invalid && form.get('password')?.touched) ? 'danger' : 'dark'"
+          [type]="showPassword ? 'text' : 'password'"
+          labelPlacement="stacked"
+          label="Senha"
+          placeholder="********"
+          fill="outline"
+          formControlName="password"
+        >
           <ion-icon slot="start" name="lock-closed" aria-hidden="true"></ion-icon>
           <ion-button color="dark" (click)="toggleShowPassword()" fill="clear" slot="end" aria-label="Show/hide">
             <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>

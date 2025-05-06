@@ -20,7 +20,6 @@ export class SyncService {
     if (!status.connected) return;
 
     const pendentes = await localforage.getItem('osPendentes');
-    console.log('Pendentes:', pendentes);
     if (Array.isArray(pendentes) && pendentes.length > 0) {
       for (const os of pendentes) {
         try {

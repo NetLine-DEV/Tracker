@@ -22,17 +22,24 @@
     <ion-card-content>
       <span>
         <ion-icon name="calendar" aria-hidden="true"></ion-icon>
-        Data de início:
+        Data de abertura:
         {{init_date | date: 'HH:mm - dd/MM/yyyy'}}
       </span>
     </ion-card-content>
     <ion-card-content>
       @if (finishDate != '') {
-        <span>
-          <ion-icon name="calendar" aria-hidden="true"></ion-icon>
-          Data de término:
-          {{finishDate | date: 'HH:mm - dd/MM/yyyy'}}
-        </span>
+        <div class="time-os">
+          <span>
+            <ion-icon name="calendar" aria-hidden="true"></ion-icon>
+            Inicio:
+            {{init_time_os | date: 'HH:mm - dd/MM/yyyy'}}
+          </span>
+          <span>
+            <ion-icon name="calendar" aria-hidden="true"></ion-icon>
+            Término:
+            {{finishDate | date: 'HH:mm - dd/MM/yyyy'}}
+          </span>
+        </div>
       } @else {
         <ion-button
         [id]="'open-modal-' + id_os"
@@ -52,7 +59,7 @@
 
 <ion-modal [trigger]="'open-modal-' + id_os" (willDismiss)="onWillDismiss($event)">
   <ng-template>
-    <ion-content class="ion-padding">
+    <ion-content id="content-modal" class="ion-padding">
       <ion-header>
         <ion-toolbar>
           <ion-buttons slot="start">
@@ -69,6 +76,15 @@
           </ion-buttons>
         </ion-toolbar>
       </ion-header>
+      <ion-item>
+        <ion-input
+          label="Data de inicio"
+          labelPlacement="stacked"
+          type="datetime-local"
+          placeholder="Insira a data de inicio"
+          [(ngModel)]="init_time_os"
+        ></ion-input>
+      </ion-item>
       <ion-item>
         <ion-input
           label="Data de fechamento"

@@ -31,6 +31,7 @@ export class CardComponent implements OnInit {
     email: '',
     idColaborador: 0
   };
+  public init_time_os: string = '';
   public finishDate: string = '';
   public isFinishedOffline: boolean = false;
 
@@ -80,6 +81,7 @@ export class CardComponent implements OnInit {
         id_os: this.id_os,
         mensagem: this.description,
         data_abertura: this.toUTCISOString(this.init_date),
+        data_inicio: this.toUTCISOString(this.init_time_os),
         data_fechamento: this.toUTCISOString(this.finishDate),
         usuario: {
           email: this.user.email,

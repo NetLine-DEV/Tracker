@@ -6,13 +6,14 @@ import { addIcons } from 'ionicons';
 import { eye, eyeOff, lockClosed, logInOutline, planetOutline } from 'ionicons/icons';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
+import { Network } from '@capacitor/network';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
   standalone: true,
-  imports: [IonContent, IonInput, IonButton, IonIcon, IonTitle, IonSpinner, IonText, CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [IonContent, IonInput, IonButton, IonIcon, IonTitle, IonSpinner, IonText, CommonModule, ReactiveFormsModule]
 })
 export class LoginPage implements OnInit{
   private authService = inject(AuthService);
@@ -21,6 +22,7 @@ export class LoginPage implements OnInit{
   public showPassword: boolean = false;
   public loading: boolean = false;
   public loginError: boolean = false;
+  public isConnected: boolean = true;
 
   constructor() {
     addIcons({ lockClosed, eye, eyeOff, logInOutline, planetOutline })
@@ -39,19 +41,27 @@ export class LoginPage implements OnInit{
     this.showPassword = !this.showPassword;
   }
 
-  login() {
+  async login() {
     this.form.markAllAsTouched();
     if (this.form.invalid) {
       return;
     }
 
+    const statusInternet = await Network.getStatus();
+
+    if (!statusInternet.connected) {
+      this.isConnected = false;
+      return;
+    }
+
+    this.isConnected = true;
     this.loading = true;
 
     const { email, password } = this.form.getRawValue();
 
     this.authService.login(email, password)
     .then(() => {
-      this.router.navigate(['/tabs/os']);
+      this.router.navigate(['/tabs/os'], { replaceUrl: true }	);
       this.form.reset();
     })
     .catch((error) => {

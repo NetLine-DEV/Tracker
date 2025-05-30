@@ -4,8 +4,9 @@ import { authGuard } from '../guards/auth.guard';
 
 export const routes: Routes = [
   {
-    path: 'tabs',
+    path: '',
     component: TabsPage,
+    canActivate: [authGuard],
     children: [
       {
         path: 'os',
@@ -14,15 +15,9 @@ export const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/os',
+        redirectTo: 'os',
         pathMatch: 'full',
       },
     ],
-    canActivate: [authGuard]
-  },
-  {
-    path: '',
-    redirectTo: '/login',
-    pathMatch: 'full',
-  },
+  }
 ];

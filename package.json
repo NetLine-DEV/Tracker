@@ -33,6 +33,7 @@
     "@ionic/angular": "^8.0.0",
     "@ionic/storage": "^4.0.0",
     "@ionic/storage-angular": "^4.0.0",
+    "@stencil/core": "^4.32.0",
     "cordova-sqlite-storage": "^7.0.0",
     "firebase": "^11.6.0",
     "ionicons": "^7.0.0",

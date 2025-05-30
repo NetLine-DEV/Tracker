@@ -36,8 +36,11 @@
             <ion-icon [name]="showPassword ? 'eye-off' : 'eye'"></ion-icon>
           </ion-button>
         </ion-input>
-        <ion-text color="danger" *ngIf="loginError">
+        <ion-text color="danger" *ngIf="loginError && isConnected">
           <p class="error-message">Verifique suas credenciais!</p>
+        </ion-text>
+        <ion-text color="danger" *ngIf="!isConnected">
+          <p class="error-message">Verifique sua conexão com a internet!</p>
         </ion-text>
         <ion-button type="submit" [disabled]="loading" color="dark" class="login-btn" fill="outline">
           <ion-icon *ngIf="!loading" name="log-in-outline" slot="start"></ion-icon>
